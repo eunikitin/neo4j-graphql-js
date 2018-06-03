@@ -73,10 +73,13 @@ export function cypherQuery(
   let query;
 
   //TODO: wrap in try catch
-  const queryTypeCypherDirective = resolveInfo.schema
-    .getQueryType()
-    .getFields()
-    [resolveInfo.fieldName].astNode.directives.filter(x => {
+  const field = resolveInfo.schema.getQueryType().getFields()[
+    resolveInfo.fieldName
+  ];
+  const queryTypeCypherDirective =
+    field.astNode &&
+    field.astNode.directives &&
+    field.astNode.directives.filter(x => {
       return x.name.value === 'cypher';
     })[0];
 

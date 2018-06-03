@@ -114,9 +114,11 @@ export function innerType(type) {
 // TODO: refactor to handle Query/Mutation type schema directives
 const directiveWithArgs = (directiveName, args) => (schemaType, fieldName) => {
   function fieldDirective(schemaType, fieldName, directiveName) {
-    return schemaType
-      .getFields()
-      [fieldName].astNode.directives.find(e => e.name.value === directiveName);
+    const field = schemaType.getFields()[fieldName];
+
+    return field.astNode && field.astNode.directives
+      ? field.astNode.directives.find(e => e.name.value === directiveName)
+      : null;
   }
 
   function directiveArgument(directive, name) {
